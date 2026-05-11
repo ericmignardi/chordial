@@ -1,4 +1,4 @@
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/hooks/useAuth";
 import { Link } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
