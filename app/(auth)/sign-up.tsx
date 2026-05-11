@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { authSchema } from "@/validators/auth";
 import { Link } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
@@ -12,8 +13,10 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async () => {
-    if (!email || !password) {
-      setError("Email and password are required");
+    const result = authSchema.safeParse({ email, password });
+
+    if (!result.success) {
+      setError(result.error.issues[0].message);
       return;
     }
 
