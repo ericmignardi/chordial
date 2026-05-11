@@ -2,7 +2,6 @@
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text,
-  full_name text,
   avatar_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -31,11 +30,10 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, email, full_name, avatar_url)
+  insert into public.profiles (id, email, avatar_url)
   values (
     new.id,
     new.email,
-    new.raw_user_meta_data->>'full_name',
     new.raw_user_meta_data->>'avatar_url'
   );
   return new;
@@ -56,7 +54,6 @@ begin
   update public.profiles
   set
     email = new.email,
-    full_name = coalesce(new.raw_user_meta_data->>'full_name', full_name),
     avatar_url = coalesce(new.raw_user_meta_data->>'avatar_url', avatar_url)
   where id = new.id;
   return new;

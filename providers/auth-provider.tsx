@@ -11,7 +11,6 @@ type AuthContextType = {
   signUp: (
     email: string,
     password: string,
-    fullName?: string,
   ) => Promise<AuthResult & { needsEmailConfirmation: boolean }>;
   signOut: () => Promise<AuthResult>;
 };
@@ -47,16 +46,8 @@ export default function AuthProvider({
     return { error };
   };
 
-  const signUp = async (
-    email: string,
-    password: string,
-    fullName?: string,
-  ) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: fullName ? { data: { full_name: fullName } } : undefined,
-    });
+  const signUp = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({ email, password });
     return { error, needsEmailConfirmation: !error && !data.session };
   };
 

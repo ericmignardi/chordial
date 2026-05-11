@@ -8,7 +8,6 @@ export default function SignUp() {
   const { signUp } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [fullName, setFullName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,11 +19,7 @@ export default function SignUp() {
 
     setLoading(true);
     setError(null);
-    const { error, needsEmailConfirmation } = await signUp(
-      email,
-      password,
-      fullName || undefined,
-    );
+    const { error, needsEmailConfirmation } = await signUp(email, password);
     setLoading(false);
 
     if (error) {
@@ -45,12 +40,6 @@ export default function SignUp() {
       <View className="flex-1 flex flex-col gap-4 p-8">
         <Text className="text-4xl font-bold">Sign up</Text>
         <View className="flex flex-col gap-4 justify-center">
-          <TextInput
-            className="focus:outline-none border border-gray-300 p-4 rounded-2xl placeholder:text-gray-400"
-            value={fullName}
-            onChangeText={setFullName}
-            placeholder="full name (optional)"
-          />
           <TextInput
             className="focus:outline-none border border-gray-300 p-4 rounded-2xl placeholder:text-gray-400"
             value={email}
