@@ -22,7 +22,10 @@ export default function SignUp() {
 
     setLoading(true);
     setError(null);
-    const { error, needsEmailConfirmation } = await signUp(email, password);
+    const { error, needsEmailConfirmation } = await signUp(
+      result.data.email,
+      result.data.password,
+    );
     setLoading(false);
 
     if (error) {
