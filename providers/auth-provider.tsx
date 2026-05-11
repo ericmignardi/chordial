@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { AuthError, Session } from "@supabase/supabase-js";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 type AuthResult = { error: AuthError | null };
 
@@ -15,7 +15,9 @@ type AuthContextType = {
   signOut: () => Promise<AuthResult>;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 export default function AuthProvider({
   children,
@@ -57,16 +59,8 @@ export default function AuthProvider({
   };
 
   return (
-    <AuthContext.Provider
-      value={{ session, loading, signIn, signUp, signOut }}
-    >
+    <AuthContext.Provider value={{ session, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
-export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
-};
