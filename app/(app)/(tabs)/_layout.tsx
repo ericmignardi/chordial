@@ -1,7 +1,8 @@
 import { useAuth } from "@/hooks/useAuth";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Pressable, Text } from "react-native";
+import { Alert } from "react-native";
 
 export default function TabsLayout() {
   const { signOut } = useAuth();
@@ -17,16 +18,34 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerRight: () => (
-          <Pressable
-            disabled={signingOut}
-            onPress={onSignOut}
-            style={{ marginRight: 16 }}
-          >
-            <Text>{signingOut ? "..." : "Sign out"}</Text>
-          </Pressable>
-        ),
+        headerShown: false,
+        // headerRight: () => (
+        //   <Pressable
+        //     disabled={signingOut}
+        //     onPress={onSignOut}
+        //     style={{ marginRight: 16 }}
+        //   >
+        //     <Text>{signingOut ? "..." : "Sign out"}</Text>
+        //   </Pressable>
+        // ),
+        tabBarActiveTintColor: "#000",
+        tabBarInactiveTintColor: "#000",
+        tabBarLabelStyle: { color: "#000" },
       }}
-    />
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              color={color}
+              size={24}
+            />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
