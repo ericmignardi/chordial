@@ -1,40 +1,24 @@
 import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Redirect, Tabs } from "expo-router";
-import React, { useState } from "react";
-import { Alert } from "react-native";
+import React from "react";
 
 export default function AppLayout() {
-  const { signOut, session, loading } = useAuth();
-  const [signingOut, setSigningOut] = useState<boolean>(false);
-
-  const onSignOut = async () => {
-    setSigningOut(true);
-    const { error } = await signOut();
-    setSigningOut(false);
-    if (error) Alert.alert("Sign out failed", error.message);
-  };
+  const { session, loading } = useAuth();
+  const { data: profile, isLoading: profileLoading } = useProfile();
 
   if (loading) return null;
-
   if (!session) return <Redirect href={"/(auth)/sign-up"} />;
+  if (profileLoading) return null;
+  if (!profile?.username) return <Redirect href={"/(auth)/onboarding"} />;
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        // headerRight: () => (
-        //   <Pressable
-        //     disabled={signingOut}
-        //     onPress={onSignOut}
-        //     style={{ marginRight: 16 }}
-        //   >
-        //     <Text>{signingOut ? "..." : "Sign out"}</Text>
-        //   </Pressable>
-        // ),
-        tabBarActiveTintColor: "#000",
+        tabBarActiveTintColor: "#059669",
         tabBarInactiveTintColor: "#000",
-        tabBarLabelStyle: { color: "#000" },
       }}
     >
       <Tabs.Screen
@@ -50,6 +34,22 @@ export default function AppLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? "person-circle" : "person-circle-outline"}
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen name="edit-profile" options={{ href: null }} />
+      <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen name="gear/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

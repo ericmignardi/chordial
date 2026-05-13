@@ -3,12 +3,13 @@ import Input from "@/components/ui/input";
 import Screen from "@/components/ui/screen";
 import { useAuth } from "@/hooks/useAuth";
 import { authSchema } from "@/validators/auth";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Text, View } from "react-native";
 
 export default function SignUp() {
   const { signUp } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +41,10 @@ export default function SignUp() {
         "Check your email",
         "We sent a confirmation link to complete your sign up.",
       );
+      return;
     }
+
+    router.replace("/(auth)/onboarding");
   };
 
   return (
