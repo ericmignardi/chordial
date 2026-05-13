@@ -39,27 +39,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      gear: {
+        Row: {
+          brand: string
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["gear_kind"]
+          model: string
+          notes: string | null
+          owner_id: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          brand: string
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["gear_kind"]
+          model: string
+          notes?: string | null
+          owner_id: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          brand?: string
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["gear_kind"]
+          model?: string
+          notes?: string | null
+          owner_id?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           created_at: string
+          display_name: string | null
           email: string | null
           id: string
+          location: string | null
           updated_at: string
+          username: string | null
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
+          display_name?: string | null
           email?: string | null
           id: string
+          location?: string | null
           updated_at?: string
+          username?: string | null
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string
+          display_name?: string | null
           email?: string | null
           id?: string
+          location?: string | null
           updated_at?: string
+          username?: string | null
         }
         Relationships: []
       }
@@ -71,7 +119,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      gear_kind: "guitar" | "bass" | "amp" | "pedal" | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -201,6 +249,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      gear_kind: ["guitar", "bass", "amp", "pedal", "other"],
+    },
   },
 } as const
