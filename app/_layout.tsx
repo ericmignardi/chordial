@@ -1,7 +1,9 @@
 import AuthProvider from "@/providers/auth-provider";
 import QueryProvider from "@/providers/query-provider";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ErrorBoundaryProps, Stack } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import "../global.css";
 
@@ -22,11 +24,15 @@ export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
 
 export default function RootLayout() {
   return (
-    <QueryProvider>
-      <AuthProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-        <Toast />
-      </AuthProvider>
-    </QueryProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryProvider>
+        <AuthProvider>
+          <BottomSheetModalProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+            <Toast />
+          </BottomSheetModalProvider>
+        </AuthProvider>
+      </QueryProvider>
+    </GestureHandlerRootView>
   );
 }

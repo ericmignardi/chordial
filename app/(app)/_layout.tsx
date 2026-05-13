@@ -78,6 +78,7 @@ export default function AppLayout() {
       <Tabs.Screen name="post/[id]" options={{ href: null }} />
       <Tabs.Screen name="u/[username]" options={{ href: null }} />
       <Tabs.Screen name="follow-list" options={{ href: null }} />
+      <Tabs.Screen name="blocked-users" options={{ href: null }} />
     </Tabs>
   );
 }

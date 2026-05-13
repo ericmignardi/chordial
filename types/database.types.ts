@@ -39,6 +39,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      blocks: {
+        Row: {
+          blocker_id: string
+          blocked_id: string
+          created_at: string
+        }
+        Insert: {
+          blocker_id: string
+          blocked_id: string
+          created_at?: string
+        }
+        Update: {
+          blocker_id?: string
+          blocked_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          id: string
+          reporter_id: string
+          target_type: string
+          target_id: string
+          reason: string
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          reporter_id: string
+          target_type: string
+          target_id: string
+          reason: string
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          reporter_id?: string
+          target_type?: string
+          target_id?: string
+          reason?: string
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           author_id: string
@@ -263,7 +311,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_account: {
+        Args: Record<string, never>
+        Returns: undefined
+      }
+      is_blocked: {
+        Args: { viewer: string; target: string }
+        Returns: boolean
+      }
     }
     Enums: {
       gear_kind: "guitar" | "bass" | "amp" | "pedal" | "other"

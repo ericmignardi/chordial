@@ -3,6 +3,7 @@ import Avatar from "@/components/ui/avatar";
 import Button from "@/components/ui/button";
 import Screen from "@/components/ui/screen";
 import Skeleton from "@/components/ui/skeleton";
+import UserActionsSheet from "@/components/user-actions-sheet";
 import { useAuth } from "@/hooks/useAuth";
 import {
   useFollow,
@@ -11,9 +12,10 @@ import {
 } from "@/hooks/useFollows";
 import { useGear } from "@/hooks/useGear";
 import { useProfileByUsername } from "@/hooks/useProfile";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
+import React, { useRef } from "react";
 import { Pressable, Text, View } from "react-native";
 
 export default function UserProfile() {
@@ -28,6 +30,7 @@ export default function UserProfile() {
   const { data: counts } = useFollowCounts(targetId);
   const follow = useFollow(targetId);
   const unfollow = useUnfollow(targetId);
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   const isSelf = !!viewerId && viewerId === targetId;
 
@@ -68,9 +71,26 @@ export default function UserProfile() {
     <Screen scroll>
       <View className="p-8">
         <View className="flex-row items-center justify-between mb-4">
-          <Pressable onPress={() => router.back()} hitSlop={12}>
+          <Pressable
+            onPress={() => router.back()}
+            hitSlop={12}
+            accessibilityLabel="Go back"
+          >
             <Ionicons name="chevron-back" size={28} color="#111" />
           </Pressable>
+          {!isSelf && (
+            <Pressable
+              onPress={() => sheetRef.current?.present()}
+              hitSlop={12}
+              accessibilityLabel="More options"
+            >
+              <Ionicons
+                name="ellipsis-horizontal"
+                size={22}
+                color="#374151"
+              />
+            </Pressable>
+          )}
         </View>
 
         <View className="items-center mb-4">
@@ -162,6 +182,15 @@ export default function UserProfile() {
           )}
         </View>
       </View>
+
+      {!isSelf && targetId && (
+        <UserActionsSheet
+          ref={sheetRef}
+          targetUserId={targetId}
+          username={profile.username}
+          onBlocked={() => router.back()}
+        />
+      )}
     </Screen>
   );
 }

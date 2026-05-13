@@ -1,9 +1,11 @@
+import PostActionsSheet from "@/components/post-actions-sheet";
 import Avatar from "@/components/ui/avatar";
 import type { FeedPost } from "@/hooks/useFeed";
 import { useLike, useUnlike } from "@/hooks/usePost";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useRef } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
 function relativeTime(iso: string): string {
@@ -31,6 +33,7 @@ export default function PostCard({ post }: PostCardProps) {
   const router = useRouter();
   const like = useLike(post.id);
   const unlike = useUnlike(post.id);
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   const onToggleLike = () => {
     if (post.liked_by_me) unlike.mutate();
@@ -71,6 +74,13 @@ export default function PostCard({ post }: PostCardProps) {
         <Text className="text-gray-400 text-xs">
           {relativeTime(post.created_at)}
         </Text>
+        <Pressable
+          onPress={() => sheetRef.current?.present()}
+          hitSlop={10}
+          accessibilityLabel="More options"
+        >
+          <Ionicons name="ellipsis-horizontal" size={20} color="#374151" />
+        </Pressable>
       </View>
 
       {image && (
@@ -105,6 +115,13 @@ export default function PostCard({ post }: PostCardProps) {
           <Text className="mt-1 font-serif">{post.caption}</Text>
         )}
       </View>
+
+      <PostActionsSheet
+        ref={sheetRef}
+        postId={post.id}
+        authorId={post.author_id}
+        authorUsername={post.author?.username}
+      />
     </View>
   );
 }
