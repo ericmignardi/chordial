@@ -29,8 +29,9 @@ Sets up the plumbing needed by every later milestone. No user-facing features la
 5. **Error boundary** in `app/_layout.tsx` (use Expo Router's `ErrorBoundary` export from the layout).
 6. **EAS Build config**: `eas.json` with `development`, `preview`, `production` profiles. Run `eas build:configure` once.
 7. **Supabase Storage buckets** (via SQL or dashboard): create `avatars` and `post-images` buckets with policies — public read, authenticated insert with path scoped to `auth.uid()`.
+8. **CI Setup**: Minimal GitHub Action running `npm run lint` on PRs. (Done)
 
-**Exit criteria**: `npm start` boots cleanly. `npm run lint` is clean. App still navigates to sign-in. Toast can be triggered from a dev button.
+**Exit criteria**: `npm start` boots cleanly. `npm run lint` is clean. App still navigates to sign-in. Toast can be triggered from a dev button. CI pipeline passes.
 
 ### New packages for M0
 
@@ -164,7 +165,6 @@ App Store and Play Store submission requirements + final polish.
 
 - **Sentry (or alternative crash reporting)** — add in M0 if possible, otherwise M4. Won't ship without it.
 - **Analytics** — defer. Don't instrument until product shape is stable.
-- **CI** — minimal GitHub Action that runs `npm run lint` on PR. M0 if time, otherwise M2.
 
 ---
 
