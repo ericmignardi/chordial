@@ -41,48 +41,18 @@ export type Database = {
     Tables: {
       blocks: {
         Row: {
-          blocker_id: string
           blocked_id: string
+          blocker_id: string
           created_at: string
         }
         Insert: {
-          blocker_id: string
           blocked_id: string
+          blocker_id: string
           created_at?: string
         }
         Update: {
-          blocker_id?: string
           blocked_id?: string
-          created_at?: string
-        }
-        Relationships: []
-      }
-      reports: {
-        Row: {
-          id: string
-          reporter_id: string
-          target_type: string
-          target_id: string
-          reason: string
-          status: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          reporter_id: string
-          target_type: string
-          target_id: string
-          reason: string
-          status?: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          reporter_id?: string
-          target_type?: string
-          target_id?: string
-          reason?: string
-          status?: string
+          blocker_id?: string
           created_at?: string
         }
         Relationships: []
@@ -129,18 +99,18 @@ export type Database = {
       follows: {
         Row: {
           created_at: string
-          follower_id: string
           followee_id: string
+          follower_id: string
         }
         Insert: {
           created_at?: string
-          follower_id: string
           followee_id: string
+          follower_id: string
         }
         Update: {
           created_at?: string
-          follower_id?: string
           followee_id?: string
+          follower_id?: string
         }
         Relationships: []
       }
@@ -306,19 +276,43 @@ export type Database = {
         }
         Relationships: []
       }
+      reports: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string
+          status: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          reporter_id: string
+          status?: string
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      delete_account: {
-        Args: Record<string, never>
-        Returns: undefined
-      }
-      is_blocked: {
-        Args: { viewer: string; target: string }
-        Returns: boolean
-      }
+      delete_account: { Args: never; Returns: undefined }
+      is_blocked: { Args: { target: string; viewer: string }; Returns: boolean }
     }
     Enums: {
       gear_kind: "guitar" | "bass" | "amp" | "pedal" | "other"
