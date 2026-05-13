@@ -3,6 +3,7 @@ import { useProfile } from "@/hooks/useProfile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
+import { View } from "react-native";
 
 export default function AppLayout() {
   const { session, loading } = useAuth();
@@ -35,6 +36,30 @@ export default function AppLayout() {
         }}
       />
       <Tabs.Screen
+        name="discover"
+        options={{
+          title: "Discover",
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? "compass" : "compass-outline"}
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="new-post"
+        options={{
+          title: "",
+          tabBarIcon: () => (
+            <View className="w-12 h-12 rounded-full bg-emerald-600 items-center justify-center -mt-4">
+              <Ionicons name="add" size={26} color="white" />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
@@ -50,6 +75,7 @@ export default function AppLayout() {
       <Tabs.Screen name="edit-profile" options={{ href: null }} />
       <Tabs.Screen name="settings" options={{ href: null }} />
       <Tabs.Screen name="gear/[id]" options={{ href: null }} />
+      <Tabs.Screen name="post/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -1,15 +1,12 @@
 import PostCard from "@/components/post-card";
-import Button from "@/components/ui/button";
 import Screen from "@/components/ui/screen";
 import Skeleton from "@/components/ui/skeleton";
 import { useFeed } from "@/hooks/useFeed";
 import { FlashList } from "@shopify/flash-list";
-import { useRouter } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
-export default function Home() {
-  const router = useRouter();
+export default function Discover() {
   const {
     data,
     isLoading,
@@ -18,14 +15,14 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useFeed("home");
+  } = useFeed("discover");
 
   const posts = data?.pages.flat() ?? [];
 
   return (
     <Screen>
       <View className="px-4 pt-2 pb-3">
-        <Text className="text-3xl font-bold">Home</Text>
+        <Text className="text-3xl font-bold">Discover</Text>
       </View>
 
       {isLoading ? (
@@ -36,15 +33,11 @@ export default function Home() {
       ) : posts.length === 0 ? (
         <View className="flex-1 items-center justify-center p-8">
           <Text className="text-xl font-bold mb-2 text-center">
-            Your feed is quiet.
+            No posts yet.
           </Text>
-          <Text className="text-gray-600 mb-6 text-center">
-            Make your first post, or head to Discover to see what other players
-            are sharing.
+          <Text className="text-gray-600 text-center">
+            Be the first — every Chordial feed starts somewhere.
           </Text>
-          <Button onPress={() => router.push("/(app)/discover")}>
-            Open Discover
-          </Button>
         </View>
       ) : (
         <FlashList

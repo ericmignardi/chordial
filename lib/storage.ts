@@ -19,3 +19,24 @@ export async function uploadAvatar(
   const { data } = supabase.storage.from("avatars").getPublicUrl(path);
   return `${data.publicUrl}?v=${Date.now()}`;
 }
+
+export async function uploadPostImage(
+  uri: string,
+  userId: string,
+  postId: string,
+  ordinal: number = 0,
+): Promise<string> {
+  const ext = (uri.split(".").pop() ?? "jpg").toLowerCase();
+  const path = `${userId}/${postId}/${ordinal}.${ext}`;
+  const buffer = await new File(uri).arrayBuffer();
+  const contentType = `image/${ext === "jpg" ? "jpeg" : ext}`;
+
+  const { error } = await supabase.storage
+    .from("post-images")
+    .upload(path, buffer, { contentType, upsert: true });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage.from("post-images").getPublicUrl(path);
+  return data.publicUrl;
+}
