@@ -8,10 +8,15 @@
     "scheme": "chordial",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.mignardi.chordial"
     },
     "android": {
+      "package": "com.mignardi.chordial",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -46,6 +51,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "75773a08-7db0-40d6-bb4b-96d588c3220f"
+      }
+    },
+    "owner": "ericmignardi"
   }
 }
