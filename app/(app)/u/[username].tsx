@@ -4,23 +4,34 @@ import Button from "@/components/ui/button";
 import Screen from "@/components/ui/screen";
 import Skeleton from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
-import { useFollowCounts } from "@/hooks/useFollows";
+import {
+  useFollow,
+  useFollowCounts,
+  useUnfollow,
+} from "@/hooks/useFollows";
 import { useGear } from "@/hooks/useGear";
-import { useProfile } from "@/hooks/useProfile";
+import { useProfileByUsername } from "@/hooks/useProfile";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-export default function Profile() {
+export default function UserProfile() {
   const router = useRouter();
+  const { username } = useLocalSearchParams<{ username: string }>();
   const { session } = useAuth();
-  const userId = session?.user.id;
-  const { data: profile, isLoading: profileLoading } = useProfile();
-  const { data: gear, isLoading: gearLoading } = useGear(userId);
-  const { data: counts } = useFollowCounts(userId);
+  const viewerId = session?.user.id;
 
-  if (profileLoading || !profile) {
+  const { data: profile, isLoading } = useProfileByUsername(username);
+  const targetId = profile?.id;
+  const { data: gear, isLoading: gearLoading } = useGear(targetId);
+  const { data: counts } = useFollowCounts(targetId);
+  const follow = useFollow(targetId);
+  const unfollow = useUnfollow(targetId);
+
+  const isSelf = !!viewerId && viewerId === targetId;
+
+  if (isLoading) {
     return (
       <Screen scroll>
         <View className="p-8 gap-4">
@@ -32,20 +43,42 @@ export default function Profile() {
     );
   }
 
+  if (!profile) {
+    return (
+      <Screen>
+        <View className="flex-1 items-center justify-center p-8">
+          <Text className="text-xl font-bold mb-2">User not found.</Text>
+          <Text className="text-gray-600 text-center mb-6">
+            We couldn&apos;t find @{username}.
+          </Text>
+          <Button onPress={() => router.back()} variant="secondary" size="md">
+            Go back
+          </Button>
+        </View>
+      </Screen>
+    );
+  }
+
+  const onToggleFollow = () => {
+    if (counts?.is_following) unfollow.mutate();
+    else follow.mutate();
+  };
+
   return (
     <Screen scroll>
       <View className="p-8">
-        <View className="flex-row justify-end mb-4">
-          <Pressable
-            onPress={() => router.push("/(app)/settings")}
-            hitSlop={12}
-          >
-            <Ionicons name="settings-outline" size={24} color="#111" />
+        <View className="flex-row items-center justify-between mb-4">
+          <Pressable onPress={() => router.back()} hitSlop={12}>
+            <Ionicons name="chevron-back" size={28} color="#111" />
           </Pressable>
         </View>
 
         <View className="items-center mb-4">
-          <Avatar uri={profile.avatar_url} name={profile.display_name ?? profile.username ?? "?"} size={96} />
+          <Avatar
+            uri={profile.avatar_url}
+            name={profile.display_name ?? profile.username ?? "?"}
+            size={96}
+          />
         </View>
 
         {profile.display_name && (
@@ -71,7 +104,7 @@ export default function Profile() {
             onPress={() =>
               router.push({
                 pathname: "/follow-list",
-                params: { userId: userId!, type: "followers" },
+                params: { userId: targetId!, type: "followers" },
               })
             }
             hitSlop={8}
@@ -85,7 +118,7 @@ export default function Profile() {
             onPress={() =>
               router.push({
                 pathname: "/follow-list",
-                params: { userId: userId!, type: "following" },
+                params: { userId: targetId!, type: "following" },
               })
             }
             hitSlop={8}
@@ -97,47 +130,34 @@ export default function Profile() {
           </Pressable>
         </View>
 
-        <Button
-          variant="secondary"
-          size="md"
-          onPress={() => router.push("/(app)/edit-profile")}
-        >
-          Edit profile
-        </Button>
+        {!isSelf && (
+          <Button
+            variant={counts?.is_following ? "secondary" : "primary"}
+            size="md"
+            onPress={onToggleFollow}
+            loading={follow.isPending || unfollow.isPending}
+          >
+            {counts?.is_following ? "Following" : "Follow"}
+          </Button>
+        )}
 
         <View className="mt-10">
-          <Text className="text-xl font-bold mb-2">My Rig</Text>
+          <Text className="text-xl font-bold mb-2">Rig</Text>
 
           {gearLoading ? (
             <View className="gap-2">
               <Skeleton className="w-full h-12 rounded" />
               <Skeleton className="w-full h-12 rounded" />
             </View>
+          ) : (gear ?? []).length === 0 ? (
+            <Text className="text-gray-500 text-sm mt-2">
+              No gear listed yet.
+            </Text>
           ) : (
             <View>
               {(gear ?? []).map((item) => (
-                <GearItem
-                  key={item.id}
-                  gear={item}
-                  onPress={() => router.push(`/(app)/gear/${item.id}`)}
-                />
+                <GearItem key={item.id} gear={item} />
               ))}
-
-              <Pressable
-                onPress={() => router.push("/(app)/gear/new")}
-                className="flex-row items-center gap-3 py-3 active:opacity-60"
-              >
-                <View className="w-10 h-10 rounded-full bg-emerald-50 items-center justify-center">
-                  <Ionicons name="add" size={22} color="#059669" />
-                </View>
-                <Text className="text-emerald-600 font-medium">Add gear</Text>
-              </Pressable>
-
-              {(!gear || gear.length === 0) && (
-                <Text className="text-gray-500 text-sm mt-2">
-                  Your Rig is empty. Add the first piece.
-                </Text>
-              )}
             </View>
           )}
         </View>

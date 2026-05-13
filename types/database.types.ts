@@ -78,6 +78,24 @@ export type Database = {
           },
         ]
       }
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          followee_id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          followee_id: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          followee_id?: string
+        }
+        Relationships: []
+      }
       gear: {
         Row: {
           brand: string

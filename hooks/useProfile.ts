@@ -25,6 +25,41 @@ export function useProfile() {
   });
 }
 
+export function useProfileByUsername(username: string | undefined) {
+  return useQuery({
+    queryKey: ["profile-by-username", username],
+    enabled: !!username,
+    queryFn: async (): Promise<Profile | null> => {
+      if (!username) return null;
+      const { data, error } = await supabase
+        .from("profiles")
+        .select()
+        .eq("username", username)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+export function useSearchProfiles(query: string) {
+  const trimmed = query.trim().toLowerCase();
+  return useQuery({
+    queryKey: ["search-profiles", trimmed],
+    enabled: trimmed.length > 0,
+    queryFn: async (): Promise<Profile[]> => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select()
+        .ilike("username", `${trimmed}%`)
+        .order("username")
+        .limit(20);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
 export function useUpdateProfile() {
   const { session } = useAuth();
   const userId = session?.user.id;

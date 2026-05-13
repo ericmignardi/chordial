@@ -84,7 +84,16 @@ export function useFeed(scope: FeedScope) {
 
       if (scope === "home") {
         if (!userId) return [];
-        q = q.eq("author_id", userId);
+        const { data: follows, error: fErr } = await supabase
+          .from("follows")
+          .select("followee_id")
+          .eq("follower_id", userId);
+        if (fErr) throw fErr;
+        const authorIds = [
+          ...new Set([userId, ...(follows ?? []).map((f) => f.followee_id)]),
+        ];
+        if (authorIds.length === 0) return [];
+        q = q.in("author_id", authorIds);
       }
 
       if (pageParam) {

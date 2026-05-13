@@ -76,6 +76,8 @@ export default function AppLayout() {
       <Tabs.Screen name="settings" options={{ href: null }} />
       <Tabs.Screen name="gear/[id]" options={{ href: null }} />
       <Tabs.Screen name="post/[id]" options={{ href: null }} />
+      <Tabs.Screen name="u/[username]" options={{ href: null }} />
+      <Tabs.Screen name="follow-list" options={{ href: null }} />
     </Tabs>
   );
 }

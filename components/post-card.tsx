@@ -37,10 +37,14 @@ export default function PostCard({ post }: PostCardProps) {
     else like.mutate();
   };
 
-  const openDetail = () => router.push(`/(app)/post/${post.id}`);
+  const openDetail = () =>
+    router.push({ pathname: "/(app)/post/[id]", params: { id: post.id } });
   const openAuthor = () => {
     if (post.author?.username) {
-      router.push(`/(app)/profile`);
+      router.push({
+        pathname: "/(app)/u/[username]",
+        params: { username: post.author.username },
+      });
     }
   };
 
