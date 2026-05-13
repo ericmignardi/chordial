@@ -8,7 +8,17 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
-import { Alert, Image, Pressable, Text, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
 export default function NewPost() {
   const router = useRouter();
@@ -96,39 +106,46 @@ export default function NewPost() {
 
   return (
     <Screen scroll>
-      <View className="p-6">
-        <View className="flex-row items-center justify-between mb-4">
-          <Pressable onPress={onDiscard} disabled={submitting}>
-            <Ionicons name="close" size={28} color="#111" />
-          </Pressable>
-          <Text className="text-xl font-bold">New post</Text>
-          <View style={{ width: 28 }} />
-        </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View className="p-6">
+            <View className="flex-row items-center justify-between mb-4">
+              <Pressable onPress={onDiscard} disabled={submitting}>
+                <Ionicons name="close" size={28} color="#111" />
+              </Pressable>
+              <Text className="text-xl font-bold">New post</Text>
+              <View style={{ width: 28 }} />
+            </View>
 
-        <Image
-          source={{ uri: imageUri }}
-          className="w-full aspect-square rounded-2xl bg-gray-100 mb-4"
-        />
+            <Image
+              source={{ uri: imageUri }}
+              className="w-full aspect-square rounded-2xl bg-gray-100 mb-4"
+            />
 
-        <Input
-          label="Caption"
-          value={caption}
-          onChangeText={setCaption}
-          placeholder="Say something about it (optional)"
-          multiline
-          numberOfLines={4}
-        />
-        <Text className="text-right text-xs text-gray-400 mt-1 mb-4">
-          {caption.length}/500
-        </Text>
+            <Input
+              label="Caption"
+              value={caption}
+              onChangeText={setCaption}
+              placeholder="Say something about it (optional)"
+              multiline
+              numberOfLines={4}
+            />
+            <Text className="text-right text-xs text-gray-400 mt-1 mb-4">
+              {caption.length}/500
+            </Text>
 
-        <Button onPress={onShare} loading={submitting}>
-          Share
-        </Button>
-        {error && (
-          <Text className="text-red-500 text-center mt-2">{error}</Text>
-        )}
-      </View>
+            <Button onPress={onShare} loading={submitting}>
+              Share
+            </Button>
+            {error && (
+              <Text className="text-red-500 text-center mt-2">{error}</Text>
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }
