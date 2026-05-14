@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# 🎸 chordial
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The premier social network for guitar players to showcase their gear, share their sound, and connect with the community.
 
-## Get started
+---
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Social Feed**: A curated stream of posts from the community, optimized with offline persistence for seamless browsing.
+- **Gear "Rig" Management**: Manage and showcase your personal collection of guitars, amps, and pedals.
+- **Community Engagement**: Interact with other players through likes, comments, and follows.
+- **Advanced Privacy**: Robust user blocking and reporting systems integrated at the database layer (RLS).
+- **Offline-First Experience**: Intelligent caching via React Query and AsyncStorage ensures your feed is always available.
 
-2. Start the app
+## Tech Stack
 
-   ```bash
-   npx expo start
-   ```
+- **Expo & React Native**: High-performance cross-platform mobile development with Expo SDK 54 and React 19.
+- **Supabase**: Enterprise-grade backend-as-a-service providing Authentication, PostgreSQL database, and S3-compatible Storage.
+- **React Query**: Sophisticated server-state management with automatic persistence and optimistic updates.
+- **NativeWind (Tailwind CSS)**: Utility-first styling for a polished "Editorial Classic" design system.
+- **Zod & React Hook Form**: Type-safe schema validation and robust form management.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Installation & Setup
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+**Prerequisites:**
 
-## Get a fresh project
-
-When you're ready, run:
+- Node.js 18+
+- [Supabase](https://supabase.com/) Account & Project
+- [Expo Go](https://expo.dev/go) or an Emulator/Simulator
 
 ```bash
-npm run reset-project
+# Clone the repository
+git clone https://github.com/yourusername/chordial.git
+cd chordial
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+# Create a .env.local file with the following:
+# EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
+# EXPO_PUBLIC_SUPABASE_KEY=your_supabase_anon_key
+
+# Generate Supabase types
+npm run types:gen
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Usage
 
-## Learn more
+**Start Development Server:**
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+**Run on iOS/Android:**
 
-## Join the community
+```bash
+npm run ios
+# or
+npm run android
+```
 
-Join our community of developers creating universal apps.
+**Lint Codebase:**
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run lint
+```
+
+---
+
+## Things Learned
+
+Throughout the development of chordial, several advanced mobile and backend concepts were explored:
+
+- **Row Level Security (RLS)**: Implementing complex relational security policies to enforce user privacy and block lists at the database layer.
+- **Infinite Scroll & Persistence**: Mastering `useInfiniteQuery` with AsyncStorage to build a high-performance, offline-ready social feed.
+- **New Architecture & React Compiler**: Leveraging the latest React Native 0.81 features and the React Compiler for optimal rendering performance.
+- **File-Based Routing**: Utilizing Expo Router for a web-like navigation experience in a native mobile environment.
+- **Design System Consistency**: Orchestrating a custom design system ("Editorial Classic") using NativeWind and custom font families.
