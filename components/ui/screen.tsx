@@ -16,7 +16,7 @@ export default function Screen({
   const innerClass = `flex-1 ${className ?? ""}`;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-surface">
       {scroll ? (
         <ScrollView
           className={innerClass}

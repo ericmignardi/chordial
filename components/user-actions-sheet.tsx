@@ -102,6 +102,7 @@ const UserActionsSheet = forwardRef<BottomSheetModal, UserActionsSheetProps>(
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         onDismiss={reset}
+        backgroundStyle={{ backgroundColor: "#FAFAF7" }}
       >
         <BottomSheetView className="flex-1 px-6 pb-8">
           {mode === "menu" ? (
@@ -111,8 +112,8 @@ const UserActionsSheet = forwardRef<BottomSheetModal, UserActionsSheetProps>(
                 className="flex-row items-center gap-4 py-4"
                 accessibilityLabel="Report this user"
               >
-                <Ionicons name="flag-outline" size={22} color="#374151" />
-                <Text className="text-base">Report user</Text>
+                <Ionicons name="flag-outline" size={22} color="#5A5A58" />
+                <Text className="text-[15px] text-ink">Report user</Text>
               </Pressable>
               <Pressable
                 onPress={onBlock}
@@ -120,15 +121,17 @@ const UserActionsSheet = forwardRef<BottomSheetModal, UserActionsSheetProps>(
                 accessibilityLabel={`Block @${username ?? "user"}`}
               >
                 <Ionicons name="ban-outline" size={22} color="#dc2626" />
-                <Text className="text-red-600 text-base">
+                <Text className="text-red-600 text-[15px]">
                   Block @{username ?? "user"}
                 </Text>
               </Pressable>
             </View>
           ) : (
             <View className="gap-4 mt-2">
-              <Text className="text-xl font-bold">Report user</Text>
-              <Text className="text-gray-600">
+              <Text className="font-serif text-[22px] text-ink">
+                Report user
+              </Text>
+              <Text className="text-ink-2">
                 Tell us what&apos;s wrong. Reports are reviewed in private.
               </Text>
               <Input

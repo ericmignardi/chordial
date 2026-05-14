@@ -44,22 +44,28 @@ export default function Discover() {
 
   return (
     <Screen>
-      <View className="px-4 pt-2 pb-3">
-        <Text className="text-3xl font-bold mb-3">Discover</Text>
-        <View className="flex-row items-center bg-gray-100 rounded-2xl px-3 h-11">
-          <Ionicons name="search" size={18} color="#6b7280" />
+      <View className="px-4 pt-2 pb-4 border-b border-hair">
+        <Text className="text-[10px] tracking-[1.6px] uppercase text-ink-3 font-sans-medium">
+          Find players &amp; gear
+        </Text>
+        <Text className="mt-1.5 mb-3.5 font-serif text-[36px] leading-none text-ink">
+          Discover
+        </Text>
+        <View className="flex-row items-center border border-hair rounded-2xl px-3 h-11">
+          <Ionicons name="search" size={18} color="#9A9A98" />
           <TextInput
             value={query}
             onChangeText={setQuery}
             placeholder="Search usernames"
+            placeholderTextColor="#9A9A98"
             autoCapitalize="none"
             autoCorrect={false}
-            className="flex-1 ml-2 text-base"
+            className="flex-1 ml-2 text-[15px] text-ink"
             accessibilityLabel="Search users by username"
           />
           {query.length > 0 && (
             <Pressable onPress={() => setQuery("")} hitSlop={8}>
-              <Ionicons name="close-circle" size={18} color="#9ca3af" />
+              <Ionicons name="close-circle" size={18} color="#9A9A98" />
             </Pressable>
           )}
         </View>
@@ -67,13 +73,13 @@ export default function Discover() {
 
       {showSearch ? (
         searching ? (
-          <View className="px-4 gap-2">
+          <View className="px-4 pt-4 gap-2">
             <Skeleton className="w-full h-12 rounded" />
             <Skeleton className="w-full h-12 rounded" />
           </View>
         ) : (searchResults ?? []).length === 0 ? (
-          <View className="px-4 py-8">
-            <Text className="text-gray-500 text-center">
+          <View className="px-4 py-10">
+            <Text className="text-ink-3 text-center">
               No users match &quot;{debounced}&quot;.
             </Text>
           </View>
@@ -90,7 +96,7 @@ export default function Discover() {
                     params: { username: item.username },
                   });
                 }}
-                className="flex-row items-center gap-3 px-4 py-3 active:opacity-60"
+                className="flex-row items-center gap-3 px-4 py-3 border-t border-hair active:opacity-60"
               >
                 <Avatar
                   uri={item.avatar_url}
@@ -99,9 +105,11 @@ export default function Discover() {
                 />
                 <View className="flex-1">
                   {item.display_name && (
-                    <Text className="font-semibold">{item.display_name}</Text>
+                    <Text className="font-sans-medium text-[14px] text-ink">
+                      {item.display_name}
+                    </Text>
                   )}
-                  <Text className="text-gray-500 text-sm">
+                  <Text className="text-ink-3 text-[12px]">
                     @{item.username ?? "unknown"}
                   </Text>
                 </View>
@@ -110,16 +118,16 @@ export default function Discover() {
           />
         )
       ) : isLoading ? (
-        <View className="px-4 gap-4">
-          <Skeleton className="w-full h-80 rounded-2xl" />
-          <Skeleton className="w-full h-80 rounded-2xl" />
+        <View className="px-4 pt-4 gap-4">
+          <Skeleton className="w-full h-80 rounded-[2px]" />
+          <Skeleton className="w-full h-80 rounded-[2px]" />
         </View>
       ) : posts.length === 0 ? (
         <View className="flex-1 items-center justify-center p-8">
-          <Text className="text-xl font-bold mb-2 text-center">
+          <Text className="font-serif text-2xl text-ink mb-2 text-center">
             No posts yet.
           </Text>
-          <Text className="text-gray-600 text-center">
+          <Text className="text-ink-2 text-center leading-relaxed">
             Be the first — every Chordial feed starts somewhere.
           </Text>
         </View>
@@ -128,6 +136,10 @@ export default function Discover() {
           data={posts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <PostCard post={item} />}
+          ItemSeparatorComponent={() => (
+            <View className="border-t border-hair" />
+          )}
+          ListHeaderComponent={<View className="h-2" />}
           refreshing={isRefetching}
           onRefresh={refetch}
           onEndReached={() => {

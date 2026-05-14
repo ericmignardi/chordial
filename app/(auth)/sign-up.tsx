@@ -1,5 +1,5 @@
+import AuthField from "@/components/ui/auth-field";
 import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
 import Screen from "@/components/ui/screen";
 import { useAuth } from "@/hooks/useAuth";
 import { authSchema } from "@/validators/auth";
@@ -49,42 +49,57 @@ export default function SignUp() {
 
   return (
     <Screen>
-      <View className="flex-1 flex flex-col gap-4 p-8">
-        <Text className="text-4xl font-bold">Sign up</Text>
-        <View className="flex flex-col gap-4 justify-center">
-          <Input
-            value={email}
-            onChangeText={setEmail}
-            placeholder="email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="email-address"
-          />
-          <Input
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            placeholder="password"
-          />
-          <Button onPress={onSubmit} loading={loading}>
-            {loading ? "Signing up..." : "Sign up"}
-          </Button>
-          {error && (
-            <View>
-              <Text className="text-red-600 text-center">{error}</Text>
-            </View>
-          )}
-          <View className="flex justify-center items-center">
-            <Text>
-              Already have account?{" "}
-              <Link
-                href="/(auth)/sign-in"
-                className="text-emerald-600 underline"
-              >
-                Sign in
-              </Link>
-            </Text>
+      <View className="flex-1">
+        <View className="flex-1 px-6 pt-4">
+          <Text className="text-[10px] tracking-[3px] uppercase text-ink-3 font-sans-medium">
+            Begin
+          </Text>
+          <Text className="mt-2 font-serif text-[36px] leading-none text-ink">
+            Create your account
+          </Text>
+          <Text className="mt-2.5 text-[14px] leading-[20px] text-ink-2">
+            Your email and a password is all we need to get you posting.
+          </Text>
+
+          <View className="mt-7 gap-[22px]">
+            <AuthField
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="you@example.com"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+            />
+            <AuthField
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••••••••"
+              secureTextEntry
+            />
           </View>
+
+          {error && (
+            <Text className="text-red-600 text-center text-[13px] mt-5">
+              {error}
+            </Text>
+          )}
+        </View>
+
+        <View className="px-5 pb-9">
+          <Button onPress={onSubmit} loading={loading}>
+            {loading ? "Creating account…" : "Create account"}
+          </Button>
+          <Text className="mt-3.5 text-center text-[13px] text-ink-3">
+            Have an account already?{" "}
+            <Link
+              href="/(auth)/sign-in"
+              className="text-ink font-sans-medium underline"
+            >
+              Sign in
+            </Link>
+          </Text>
         </View>
       </View>
     </Screen>

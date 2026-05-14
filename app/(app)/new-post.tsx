@@ -1,14 +1,12 @@
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
 import Screen from "@/components/ui/screen";
 import { useCreatePost } from "@/hooks/usePost";
 import { toast } from "@/lib/toast";
 import { postSchema } from "@/validators/post";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Keyboard,
@@ -16,6 +14,7 @@ import {
   Platform,
   Pressable,
   Text,
+  TextInput,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -64,7 +63,7 @@ export default function NewPost() {
   );
 
   const onShare = async () => {
-    if (!imageUri) return;
+    if (!imageUri || submitting) return;
     const parsed = postSchema.safeParse({ caption: caption.trim() || null });
     if (!parsed.success) {
       setError(parsed.error.issues[0].message);
@@ -98,51 +97,79 @@ export default function NewPost() {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <Text className="text-gray-500">Opening picker...</Text>
+          <Text className="text-ink-3">Opening picker…</Text>
         </View>
       </Screen>
     );
   }
 
   return (
-    <Screen scroll>
+    <Screen>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="p-6">
-            <View className="flex-row items-center justify-between mb-4">
-              <Pressable onPress={onDiscard} disabled={submitting}>
-                <Ionicons name="close" size={28} color="#111" />
-              </Pressable>
-              <Text className="text-xl font-bold">New post</Text>
-              <View style={{ width: 28 }} />
-            </View>
+        {/* header */}
+        <View className="flex-row items-center justify-between px-4 pt-2 pb-3 border-b border-hair">
+          <Pressable onPress={onDiscard} disabled={submitting} hitSlop={8}>
+            <Text className="text-[15px] text-ink-2">Cancel</Text>
+          </Pressable>
+          <Text className="text-[13px] font-sans-medium tracking-[1px] uppercase text-ink-2">
+            New post
+          </Text>
+          <Pressable onPress={onShare} disabled={submitting} hitSlop={8}>
+            {submitting ? (
+              <ActivityIndicator size="small" color="#059669" />
+            ) : (
+              <Text className="text-[15px] font-sans-semibold text-emerald-600">
+                Share
+              </Text>
+            )}
+          </Pressable>
+        </View>
 
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View className="flex-1 p-4">
             <Image
               source={{ uri: imageUri }}
-              className="w-full aspect-square rounded-2xl bg-gray-100 mb-4"
+              className="w-full aspect-square rounded-[2px] bg-gray-100"
             />
 
-            <Input
-              label="Caption"
-              value={caption}
-              onChangeText={setCaption}
-              placeholder="Say something about it (optional)"
-              multiline
-              numberOfLines={4}
-            />
-            <Text className="text-right text-xs text-gray-400 mt-1 mb-4">
-              {caption.length}/500
-            </Text>
+            <View className="mt-6 flex-1">
+              <Text className="text-[11px] tracking-[1.5px] uppercase text-ink-2 font-sans-medium mb-2">
+                Caption
+              </Text>
+              <TextInput
+                value={caption}
+                onChangeText={setCaption}
+                placeholder="Say something about it…"
+                placeholderTextColor="#9A9A98"
+                multiline
+                maxLength={500}
+                className="font-serif text-[20px] leading-[28px] text-ink min-h-[100px]"
+                style={{ textAlignVertical: "top" }}
+              />
+              <Text className="text-right text-[12px] text-ink-3 mt-2">
+                {caption.length} / 500
+              </Text>
+            </View>
 
-            <Button onPress={onShare} loading={submitting}>
-              Share
-            </Button>
             {error && (
-              <Text className="text-red-500 text-center mt-2">{error}</Text>
+              <Text className="text-red-500 text-center mb-3">{error}</Text>
             )}
+
+            {/* upload status bar */}
+            <View className="flex-row items-center gap-3 pt-3 border-t border-hair">
+              <Text className="text-[12px] tracking-[1px] uppercase text-ink-2 font-sans-medium">
+                {submitting ? "Posting…" : "Ready"}
+              </Text>
+              <View className="flex-1 h-0.5 bg-hair rounded-full overflow-hidden">
+                <View
+                  className="h-full bg-emerald-600 rounded-full"
+                  style={{ width: submitting ? "60%" : "100%" }}
+                />
+              </View>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

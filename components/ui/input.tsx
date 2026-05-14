@@ -11,15 +11,17 @@ const Input = forwardRef<TextInput, InputProps>(function Input(
   ref,
 ) {
   return (
-    <View className="flex flex-col gap-1">
+    <View className="flex flex-col gap-1.5">
       {label && (
-        <Text className="text-sm font-medium text-gray-700">{label}</Text>
+        <Text className="text-[11px] tracking-[1.5px] uppercase font-sans-medium text-ink-2">
+          {label}
+        </Text>
       )}
       <TextInput
         ref={ref}
-        placeholderTextColor="#9CA3AF"
-        className={`focus:outline-none border p-4 rounded-2xl placeholder:text-gray-400 ${
-          error ? "border-red-500" : "border-gray-300"
+        placeholderTextColor="#9A9A98"
+        className={`focus:outline-none border p-4 rounded-2xl text-ink placeholder:text-ink-3 ${
+          error ? "border-red-500" : "border-hair"
         } ${className ?? ""}`}
         {...rest}
       />

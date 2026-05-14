@@ -83,28 +83,33 @@ export default function EditProfile() {
 
   return (
     <Screen scroll>
-      <View className="p-8">
-        <View className="flex-row items-center gap-3 mb-6">
-          <Pressable onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={28} color="#111" />
+      <View className="px-4">
+        <View className="pt-2 pb-6">
+          <Pressable onPress={() => router.back()} hitSlop={8}>
+            <Ionicons name="chevron-back" size={26} color="#111111" />
           </Pressable>
-          <Text className="text-3xl font-bold">Edit profile</Text>
+          <Text className="mt-2 font-serif text-[34px] leading-none text-ink">
+            Edit profile
+          </Text>
         </View>
 
-        <View className="items-center mb-8">
-          <Pressable onPress={pickAvatar}>
+        <View className="items-start mb-7">
+          <Pressable
+            onPress={pickAvatar}
+            className="flex-row items-center gap-3.5"
+          >
             <Avatar
               uri={avatarUri ?? profile?.avatar_url}
               name={displayName || profile?.username || "?"}
               size={96}
             />
-            <Text className="text-emerald-600 text-center mt-2">
+            <Text className="text-emerald-600 font-sans-medium text-[14px]">
               Change photo
             </Text>
           </Pressable>
         </View>
 
-        <View className="flex flex-col gap-4">
+        <View className="flex flex-col gap-5">
           <Input
             label="Display name"
             value={displayName}
@@ -126,12 +131,15 @@ export default function EditProfile() {
             placeholder="City, Country"
           />
           <Button onPress={onSave} loading={submitting}>
-            Save changes
+            {submitting ? "Saving…" : "Save changes"}
           </Button>
           {error && (
-            <Text className="text-red-500 text-center">{error}</Text>
+            <Text className="text-red-600 text-center text-[13px]">
+              {error}
+            </Text>
           )}
         </View>
+        <View className="h-8" />
       </View>
     </Screen>
   );

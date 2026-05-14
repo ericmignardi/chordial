@@ -37,9 +37,9 @@ export default function UserProfile() {
   if (isLoading) {
     return (
       <Screen scroll>
-        <View className="p-8 gap-4">
+        <View className="p-4 gap-4">
           <Skeleton className="w-24 h-24 rounded-full" />
-          <Skeleton className="w-40 h-6 rounded" />
+          <Skeleton className="w-40 h-7 rounded" />
           <Skeleton className="w-24 h-4 rounded" />
         </View>
       </Screen>
@@ -50,8 +50,10 @@ export default function UserProfile() {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center p-8">
-          <Text className="text-xl font-bold mb-2">User not found.</Text>
-          <Text className="text-gray-600 text-center mb-6">
+          <Text className="font-serif text-2xl text-ink mb-2 text-center">
+            User not found.
+          </Text>
+          <Text className="text-ink-2 text-center mb-6">
             We couldn&apos;t find @{username}.
           </Text>
           <Button onPress={() => router.back()} variant="secondary" size="md">
@@ -69,57 +71,55 @@ export default function UserProfile() {
 
   return (
     <Screen scroll>
-      <View className="p-8">
-        <View className="flex-row items-center justify-between mb-4">
+      {/* top bar */}
+      <View className="flex-row items-center justify-between px-4 pt-2 pb-2.5">
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={12}
+          accessibilityLabel="Go back"
+        >
+          <Ionicons name="chevron-back" size={26} color="#111111" />
+        </Pressable>
+        {!isSelf && (
           <Pressable
-            onPress={() => router.back()}
+            onPress={() => sheetRef.current?.present()}
             hitSlop={12}
-            accessibilityLabel="Go back"
+            accessibilityLabel="More options"
           >
-            <Ionicons name="chevron-back" size={28} color="#111" />
+            <Ionicons name="ellipsis-horizontal" size={22} color="#5A5A58" />
           </Pressable>
-          {!isSelf && (
-            <Pressable
-              onPress={() => sheetRef.current?.present()}
-              hitSlop={12}
-              accessibilityLabel="More options"
-            >
-              <Ionicons
-                name="ellipsis-horizontal"
-                size={22}
-                color="#374151"
-              />
-            </Pressable>
-          )}
-        </View>
+        )}
+      </View>
 
-        <View className="items-center mb-4">
-          <Avatar
-            uri={profile.avatar_url}
-            name={profile.display_name ?? profile.username ?? "?"}
-            size={96}
-          />
-        </View>
+      {/* identity */}
+      <View className="px-4 pb-6">
+        <Avatar
+          uri={profile.avatar_url}
+          name={profile.display_name ?? profile.username ?? "?"}
+          size={96}
+        />
 
         {profile.display_name && (
-          <Text className="text-2xl font-serif font-semibold text-center">
+          <Text className="mt-[18px] font-serif text-[28px] leading-tight text-ink">
             {profile.display_name}
           </Text>
         )}
-        <Text className="text-gray-500 text-center mb-3">
+        <Text className="mt-0.5 text-[13px] text-ink-3">
           @{profile.username}
         </Text>
-
-        {profile.bio && (
-          <Text className="text-center text-gray-700 mb-2">{profile.bio}</Text>
-        )}
         {profile.location && (
-          <Text className="text-center text-gray-500 text-sm mb-4">
+          <Text className="mt-2 text-[13px] text-ink-3">
             {profile.location}
           </Text>
         )}
+        {profile.bio && (
+          <Text className="mt-3.5 text-[15px] leading-[22px] text-ink">
+            {profile.bio}
+          </Text>
+        )}
 
-        <View className="flex-row justify-center gap-6 mb-6">
+        {/* stats */}
+        <View className="flex-row gap-6 mt-[18px]">
           <Pressable
             onPress={() =>
               router.push({
@@ -129,9 +129,11 @@ export default function UserProfile() {
             }
             hitSlop={8}
           >
-            <Text className="text-gray-700 text-center">
-              <Text className="font-bold">{counts?.followers ?? 0}</Text>{" "}
-              followers
+            <Text className="text-[13px] text-ink-2">
+              <Text className="text-ink font-sans-medium text-[15px]">
+                {counts?.followers ?? 0}
+              </Text>{" "}
+              Followers
             </Text>
           </Pressable>
           <Pressable
@@ -143,45 +145,57 @@ export default function UserProfile() {
             }
             hitSlop={8}
           >
-            <Text className="text-gray-700 text-center">
-              <Text className="font-bold">{counts?.following ?? 0}</Text>{" "}
-              following
+            <Text className="text-[13px] text-ink-2">
+              <Text className="text-ink font-sans-medium text-[15px]">
+                {counts?.following ?? 0}
+              </Text>{" "}
+              Following
             </Text>
           </Pressable>
         </View>
 
         {!isSelf && (
-          <Button
-            variant={counts?.is_following ? "secondary" : "primary"}
-            size="md"
-            onPress={onToggleFollow}
-            loading={follow.isPending || unfollow.isPending}
-          >
-            {counts?.is_following ? "Following" : "Follow"}
-          </Button>
+          <View className="mt-[18px]">
+            <Button
+              variant={counts?.is_following ? "secondary" : "primary"}
+              size="md"
+              onPress={onToggleFollow}
+              loading={follow.isPending || unfollow.isPending}
+            >
+              {counts?.is_following ? "Following" : "Follow"}
+            </Button>
+          </View>
         )}
-
-        <View className="mt-10">
-          <Text className="text-xl font-bold mb-2">Rig</Text>
-
-          {gearLoading ? (
-            <View className="gap-2">
-              <Skeleton className="w-full h-12 rounded" />
-              <Skeleton className="w-full h-12 rounded" />
-            </View>
-          ) : (gear ?? []).length === 0 ? (
-            <Text className="text-gray-500 text-sm mt-2">
-              No gear listed yet.
-            </Text>
-          ) : (
-            <View>
-              {(gear ?? []).map((item) => (
-                <GearItem key={item.id} gear={item} />
-              ))}
-            </View>
-          )}
-        </View>
       </View>
+
+      {/* Rig */}
+      <View className="px-4 border-t border-hair">
+        <View className="flex-row items-baseline justify-between pt-5 pb-3">
+          <Text className="font-serif text-[22px] text-ink">Rig</Text>
+          <Text className="text-[11px] tracking-[1px] uppercase text-ink-3 font-sans-medium">
+            {(gear ?? []).length} items
+          </Text>
+        </View>
+
+        {gearLoading ? (
+          <View className="gap-2">
+            <Skeleton className="w-full h-12 rounded" />
+            <Skeleton className="w-full h-12 rounded" />
+          </View>
+        ) : (gear ?? []).length === 0 ? (
+          <Text className="text-ink-3 text-[13px] pb-2">
+            No gear listed yet.
+          </Text>
+        ) : (
+          <View>
+            {(gear ?? []).map((item) => (
+              <GearItem key={item.id} gear={item} />
+            ))}
+          </View>
+        )}
+      </View>
+
+      <View className="h-8" />
 
       {!isSelf && targetId && (
         <UserActionsSheet

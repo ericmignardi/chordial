@@ -18,8 +18,20 @@ export default function AppLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#059669",
-        tabBarInactiveTintColor: "#000",
+        tabBarActiveTintColor: "#111111",
+        tabBarInactiveTintColor: "#9A9A98",
+        tabBarStyle: {
+          backgroundColor: "#FAFAF7",
+          borderTopColor: "rgba(0,0,0,0.07)",
+          borderTopWidth: 1,
+        },
+        tabBarLabelStyle: {
+          fontSize: 10,
+          letterSpacing: 1,
+          textTransform: "uppercase",
+          fontWeight: "500",
+        },
+        tabBarItemStyle: { paddingTop: 6 },
       }}
     >
       <Tabs.Screen
@@ -30,7 +42,7 @@ export default function AppLayout() {
             <Ionicons
               name={focused ? "home" : "home-outline"}
               color={color}
-              size={24}
+              size={22}
             />
           ),
         }}
@@ -43,7 +55,7 @@ export default function AppLayout() {
             <Ionicons
               name={focused ? "compass" : "compass-outline"}
               color={color}
-              size={26}
+              size={24}
             />
           ),
         }}
@@ -51,9 +63,22 @@ export default function AppLayout() {
       <Tabs.Screen
         name="new-post"
         options={{
-          title: "",
+          title: "New",
           tabBarIcon: () => (
-            <View className="w-12 h-12 rounded-full bg-emerald-600 items-center justify-center -mt-4">
+            <View
+              className="rounded-full bg-emerald-600 items-center justify-center -mt-6"
+              style={{
+                width: 56,
+                height: 56,
+                borderWidth: 4,
+                borderColor: "#FAFAF7",
+                shadowColor: "#059669",
+                shadowOpacity: 0.25,
+                shadowRadius: 12,
+                shadowOffset: { width: 0, height: 4 },
+                elevation: 6,
+              }}
+            >
               <Ionicons name="add" size={26} color="white" />
             </View>
           ),
@@ -62,12 +87,12 @@ export default function AppLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "You",
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
-              name={focused ? "person-circle" : "person-circle-outline"}
+              name={focused ? "person" : "person-outline"}
               color={color}
-              size={26}
+              size={22}
             />
           ),
         }}

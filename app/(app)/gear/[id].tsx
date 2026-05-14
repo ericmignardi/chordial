@@ -114,17 +114,19 @@ export default function GearForm() {
         className="flex-1"
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="p-8">
-            <View className="flex-row items-center gap-3 mb-6">
-              <Pressable onPress={() => router.back()}>
-                <Ionicons name="chevron-back" size={28} color="#111" />
+          <View className="px-4">
+            <View className="pt-2 pb-6">
+              <Pressable onPress={() => router.back()} hitSlop={8}>
+                <Ionicons name="chevron-back" size={26} color="#111111" />
               </Pressable>
-              <Text className="text-3xl font-bold">
+              <Text className="mt-2 font-serif text-[34px] leading-none text-ink">
                 {isNew ? "Add gear" : "Edit gear"}
               </Text>
             </View>
 
-            <Text className="text-sm font-medium text-gray-700 mb-2">Kind</Text>
+            <Text className="text-[11px] tracking-[1.5px] uppercase font-sans-medium text-ink-2 mb-2">
+              Kind
+            </Text>
             <View className="flex-row flex-wrap gap-2 mb-6">
               {KINDS.map((k) => {
                 const active = k.value === kind;
@@ -135,12 +137,12 @@ export default function GearForm() {
                     className={`px-4 py-2 rounded-full border ${
                       active
                         ? "bg-emerald-600 border-emerald-600"
-                        : "bg-white border-gray-300"
+                        : "bg-surface border-hair"
                     }`}
                   >
                     <Text
                       className={
-                        active ? "text-white font-medium" : "text-gray-900"
+                        active ? "text-white font-sans-medium" : "text-ink"
                       }
                     >
                       {k.label}
@@ -150,7 +152,7 @@ export default function GearForm() {
               })}
             </View>
 
-            <View className="flex flex-col gap-4">
+            <View className="flex flex-col gap-5">
               <Input
                 label="Brand"
                 value={brand}
@@ -179,19 +181,22 @@ export default function GearForm() {
                 numberOfLines={4}
               />
               <Button onPress={onSave} loading={submitting}>
-                Save
+                {submitting ? "Saving…" : "Save"}
               </Button>
               {error && (
-                <Text className="text-red-500 text-center">{error}</Text>
+                <Text className="text-red-600 text-center text-[13px]">
+                  {error}
+                </Text>
               )}
               {!isNew && (
                 <Pressable onPress={onDelete} className="mt-4 py-2">
-                  <Text className="text-red-600 text-center font-medium">
+                  <Text className="text-red-600 text-center font-sans-medium">
                     Delete
                   </Text>
                 </Pressable>
               )}
             </View>
+            <View className="h-8" />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

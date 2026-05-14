@@ -20,20 +20,20 @@ export default function GearItem({ gear, onPress }: GearItemProps) {
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row items-center gap-4 py-3 active:opacity-60"
+      className="flex-row items-center gap-3 py-3.5 border-t border-hair active:opacity-60"
     >
-      <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center">
-        <Ionicons name={iconByKind[gear.kind]} size={20} color="#374151" />
+      <View className="w-7 h-7 items-center justify-center">
+        <Ionicons name={iconByKind[gear.kind]} size={20} color="#5A5A58" />
       </View>
       <View className="flex-1">
-        <Text className="text-base">
-          <Text className="font-semibold">{gear.brand}</Text>
-          <Text className="text-gray-500"> · </Text>
-          <Text className="font-serif">{gear.model}</Text>
+        <Text className="text-[15px] leading-tight text-ink">
+          <Text className="font-sans-semibold">{gear.brand}</Text>
+          <Text className="text-ink-2"> · </Text>
+          <Text className="font-serif-italic">{gear.model}</Text>
         </Text>
       </View>
       {gear.year && (
-        <Text className="text-gray-500 text-sm">{gear.year}</Text>
+        <Text className="text-ink-3 text-[13px] tracking-wide">{gear.year}</Text>
       )}
     </Pressable>
   );

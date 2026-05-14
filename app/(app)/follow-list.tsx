@@ -26,30 +26,34 @@ export default function FollowList() {
 
   return (
     <Screen>
-      <View className="flex-row items-center gap-3 px-6 pt-2 pb-3">
+      <View className="px-4 pt-2 pb-3">
         <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Ionicons name="chevron-back" size={28} color="#111" />
+          <Ionicons name="chevron-back" size={26} color="#111111" />
         </Pressable>
-        <Text className="text-2xl font-bold">{title}</Text>
+        <Text className="mt-2 font-serif text-[34px] leading-none text-ink">
+          {title}
+        </Text>
       </View>
 
       {isLoading ? (
-        <View className="px-6 gap-3">
+        <View className="px-4 gap-3">
           <Skeleton className="w-full h-12 rounded" />
           <Skeleton className="w-full h-12 rounded" />
           <Skeleton className="w-full h-12 rounded" />
         </View>
       ) : (data ?? []).length === 0 ? (
         <View className="flex-1 items-center justify-center p-8">
-          <Text className="text-gray-500">
-            {type === "followers" ? "No followers yet." : "Not following anyone yet."}
+          <Text className="text-ink-3">
+            {type === "followers"
+              ? "No followers yet."
+              : "Not following anyone yet."}
           </Text>
         </View>
       ) : (
         <FlatList
           data={data ?? []}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 24 }}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
           renderItem={({ item }: { item: FollowUser }) => (
             <Pressable
               onPress={() => {
@@ -59,7 +63,7 @@ export default function FollowList() {
                   params: { username: item.username },
                 });
               }}
-              className="flex-row items-center gap-3 py-3 active:opacity-60"
+              className="flex-row items-center gap-3 py-3 border-t border-hair active:opacity-60"
             >
               <Avatar
                 uri={item.avatar_url}
@@ -68,9 +72,11 @@ export default function FollowList() {
               />
               <View className="flex-1">
                 {item.display_name && (
-                  <Text className="font-semibold">{item.display_name}</Text>
+                  <Text className="font-sans-medium text-[14px] text-ink">
+                    {item.display_name}
+                  </Text>
                 )}
-                <Text className="text-gray-500 text-sm">
+                <Text className="text-ink-3 text-[12px]">
                   @{item.username ?? "unknown"}
                 </Text>
               </View>

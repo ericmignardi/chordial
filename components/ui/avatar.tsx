@@ -36,7 +36,7 @@ export default function Avatar({ uri, name, size = 40 }: AvatarProps) {
       className="rounded-full bg-emerald-600 items-center justify-center"
     >
       <Text
-        className={`text-white font-serif font-semibold ${textSizeByAvatar[size]}`}
+        className={`text-white font-serif-medium ${textSizeByAvatar[size]}`}
       >
         {initial}
       </Text>

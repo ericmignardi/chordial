@@ -124,6 +124,7 @@ const PostActionsSheet = forwardRef<BottomSheetModal, PostActionsSheetProps>(
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
         onDismiss={reset}
+        backgroundStyle={{ backgroundColor: "#FAFAF7" }}
       >
         <BottomSheetView className="flex-1 px-6 pb-8">
           {mode === "menu" ? (
@@ -135,7 +136,7 @@ const PostActionsSheet = forwardRef<BottomSheetModal, PostActionsSheetProps>(
                   accessibilityLabel="Delete this post"
                 >
                   <Ionicons name="trash-outline" size={22} color="#dc2626" />
-                  <Text className="text-red-600 text-base">Delete post</Text>
+                  <Text className="text-red-600 text-[15px]">Delete post</Text>
                 </Pressable>
               ) : (
                 <>
@@ -144,8 +145,8 @@ const PostActionsSheet = forwardRef<BottomSheetModal, PostActionsSheetProps>(
                     className="flex-row items-center gap-4 py-4"
                     accessibilityLabel="Report this post"
                   >
-                    <Ionicons name="flag-outline" size={22} color="#374151" />
-                    <Text className="text-base">Report post</Text>
+                    <Ionicons name="flag-outline" size={22} color="#5A5A58" />
+                    <Text className="text-[15px] text-ink">Report post</Text>
                   </Pressable>
                   <Pressable
                     onPress={onBlock}
@@ -153,7 +154,7 @@ const PostActionsSheet = forwardRef<BottomSheetModal, PostActionsSheetProps>(
                     accessibilityLabel={`Block @${authorUsername ?? "user"}`}
                   >
                     <Ionicons name="ban-outline" size={22} color="#dc2626" />
-                    <Text className="text-red-600 text-base">
+                    <Text className="text-red-600 text-[15px]">
                       Block @{authorUsername ?? "user"}
                     </Text>
                   </Pressable>
@@ -164,14 +165,16 @@ const PostActionsSheet = forwardRef<BottomSheetModal, PostActionsSheetProps>(
                 className="flex-row items-center gap-4 py-4"
                 accessibilityLabel="Cancel"
               >
-                <Ionicons name="close-outline" size={22} color="#374151" />
-                <Text className="text-base">Cancel</Text>
+                <Ionicons name="close-outline" size={22} color="#5A5A58" />
+                <Text className="text-[15px] text-ink">Cancel</Text>
               </Pressable>
             </View>
           ) : (
             <View className="gap-4 mt-2">
-              <Text className="text-xl font-bold">Report post</Text>
-              <Text className="text-gray-600">
+              <Text className="font-serif text-[22px] text-ink">
+                Report post
+              </Text>
+              <Text className="text-ink-2">
                 Tell us what&apos;s wrong. Reports are reviewed in private.
               </Text>
               <Input

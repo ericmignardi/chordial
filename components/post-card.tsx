@@ -54,8 +54,8 @@ export default function PostCard({ post }: PostCardProps) {
   const image = post.images[0];
 
   return (
-    <View className="mb-6">
-      <View className="flex-row items-center gap-3 px-4 mb-3">
+    <View className="px-4 pb-8">
+      <View className="flex-row items-center gap-3 py-3.5">
         <Pressable onPress={openAuthor}>
           <Avatar
             uri={post.author?.avatar_url}
@@ -65,21 +65,21 @@ export default function PostCard({ post }: PostCardProps) {
         </Pressable>
         <Pressable onPress={openAuthor} className="flex-1">
           {post.author?.display_name && (
-            <Text className="font-semibold">{post.author.display_name}</Text>
+            <Text className="font-sans-medium text-[14px] text-ink leading-tight">
+              {post.author.display_name}
+            </Text>
           )}
-          <Text className="text-gray-500 text-sm">
-            @{post.author?.username ?? "unknown"}
+          <Text className="text-ink-3 text-[12px] leading-tight">
+            @{post.author?.username ?? "unknown"} ·{" "}
+            {relativeTime(post.created_at)}
           </Text>
         </Pressable>
-        <Text className="text-gray-400 text-xs">
-          {relativeTime(post.created_at)}
-        </Text>
         <Pressable
           onPress={() => sheetRef.current?.present()}
           hitSlop={10}
           accessibilityLabel="More options"
         >
-          <Ionicons name="ellipsis-horizontal" size={20} color="#374151" />
+          <Ionicons name="ellipsis-horizontal" size={20} color="#5A5A58" />
         </Pressable>
       </View>
 
@@ -87,33 +87,46 @@ export default function PostCard({ post }: PostCardProps) {
         <Pressable onPress={openDetail}>
           <Image
             source={{ uri: image.url }}
-            className="w-full aspect-square bg-gray-100"
+            className="w-full aspect-square bg-gray-100 rounded-[2px]"
           />
         </Pressable>
       )}
 
-      <View className="flex-row items-center gap-4 px-4 py-2">
-        <Pressable onPress={onToggleLike} hitSlop={8}>
+      {post.caption && (
+        <Text className="mt-3.5 font-serif text-[18px] leading-[26px] text-ink">
+          {post.caption}
+        </Text>
+      )}
+
+      <View className="flex-row items-center gap-[18px] mt-[18px]">
+        <Pressable
+          onPress={onToggleLike}
+          hitSlop={8}
+          className="flex-row items-center gap-1.5"
+        >
           <Ionicons
             name={post.liked_by_me ? "heart" : "heart-outline"}
-            size={26}
-            color={post.liked_by_me ? "#059669" : "#111"}
+            size={20}
+            color={post.liked_by_me ? "#059669" : "#111111"}
           />
+          <Text
+            className={`text-[14px] font-sans-medium ${
+              post.liked_by_me ? "text-emerald-600" : "text-ink"
+            }`}
+          >
+            {post.likes_count}
+          </Text>
         </Pressable>
-        <Pressable onPress={openDetail} hitSlop={8}>
-          <Ionicons name="chatbubble-outline" size={22} color="#111" />
+        <Pressable
+          onPress={openDetail}
+          hitSlop={8}
+          className="flex-row items-center gap-1.5"
+        >
+          <Ionicons name="chatbubble-outline" size={20} color="#111111" />
+          <Text className="text-[14px] font-sans-medium text-ink">
+            {post.comments_count}
+          </Text>
         </Pressable>
-      </View>
-
-      <View className="px-4">
-        <Text className="text-sm text-gray-700">
-          {post.likes_count} {post.likes_count === 1 ? "like" : "likes"} ·{" "}
-          {post.comments_count}{" "}
-          {post.comments_count === 1 ? "comment" : "comments"}
-        </Text>
-        {post.caption && (
-          <Text className="mt-1 font-serif">{post.caption}</Text>
-        )}
       </View>
 
       <PostActionsSheet

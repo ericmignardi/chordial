@@ -23,7 +23,7 @@ function BlockedRow({ user }: { user: BlockedUser }) {
   };
 
   return (
-    <View className="flex-row items-center gap-3 py-3">
+    <View className="flex-row items-center gap-3 py-3 border-t border-hair">
       <Avatar
         uri={user.avatar_url}
         name={user.display_name ?? user.username ?? "?"}
@@ -31,9 +31,11 @@ function BlockedRow({ user }: { user: BlockedUser }) {
       />
       <View className="flex-1">
         {user.display_name && (
-          <Text className="font-semibold">{user.display_name}</Text>
+          <Text className="font-sans-medium text-[14px] text-ink">
+            {user.display_name}
+          </Text>
         )}
-        <Text className="text-gray-500 text-sm">
+        <Text className="text-ink-3 text-[12px]">
           @{user.username ?? "unknown"}
         </Text>
       </View>
@@ -55,25 +57,27 @@ export default function BlockedUsers() {
 
   return (
     <Screen>
-      <View className="flex-row items-center gap-3 px-6 pt-2 pb-3">
+      <View className="px-4 pt-2 pb-3">
         <Pressable
           onPress={() => router.back()}
           hitSlop={12}
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={28} color="#111" />
+          <Ionicons name="chevron-back" size={26} color="#111111" />
         </Pressable>
-        <Text className="text-2xl font-bold">Blocked users</Text>
+        <Text className="mt-2 font-serif text-[34px] leading-none text-ink">
+          Blocked users
+        </Text>
       </View>
 
       {isLoading ? (
-        <View className="px-6 gap-3">
+        <View className="px-4 gap-3">
           <Skeleton className="w-full h-12 rounded" />
           <Skeleton className="w-full h-12 rounded" />
         </View>
       ) : (data ?? []).length === 0 ? (
         <View className="flex-1 items-center justify-center p-8">
-          <Text className="text-gray-500 text-center">
+          <Text className="text-ink-3 text-center">
             You haven&apos;t blocked anyone.
           </Text>
         </View>
@@ -81,7 +85,7 @@ export default function BlockedUsers() {
         <FlatList
           data={data ?? []}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 24 }}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
           renderItem={({ item }) => <BlockedRow user={item} />}
         />
       )}

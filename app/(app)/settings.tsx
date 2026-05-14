@@ -91,12 +91,18 @@ export default function Settings() {
 
   return (
     <Screen scroll>
-      <View className="p-8">
-        <View className="flex-row items-center gap-3 mb-6">
-          <Pressable onPress={() => router.back()} accessibilityLabel="Go back">
-            <Ionicons name="chevron-back" size={28} color="#111" />
+      <View className="px-4">
+        <View className="pt-2 pb-4">
+          <Pressable
+            onPress={() => router.back()}
+            accessibilityLabel="Go back"
+            hitSlop={8}
+          >
+            <Ionicons name="chevron-back" size={26} color="#111111" />
           </Pressable>
-          <Text className="text-3xl font-bold">Settings</Text>
+          <Text className="mt-2 font-serif text-[34px] leading-none text-ink">
+            Settings
+          </Text>
         </View>
 
         <View className="flex-col">
@@ -107,24 +113,24 @@ export default function Settings() {
               disabled={row.disabled || !row.onPress}
               accessibilityLabel={row.label}
               accessibilityRole="button"
-              className={`flex-row items-center gap-4 py-4 border-b border-gray-100 ${
+              className={`flex-row items-center gap-3.5 py-4 border-t border-hair ${
                 row.disabled ? "opacity-40" : "active:opacity-60"
               }`}
             >
               <Ionicons
                 name={row.icon}
-                size={22}
-                color={row.destructive ? "#dc2626" : "#374151"}
+                size={20}
+                color={row.destructive ? "#dc2626" : "#5A5A58"}
               />
               <Text
-                className={`flex-1 text-base ${
-                  row.destructive ? "text-red-600" : "text-gray-900"
+                className={`flex-1 text-[15px] ${
+                  row.destructive ? "text-red-600" : "text-ink"
                 }`}
               >
                 {row.label}
               </Text>
               {!row.disabled && (
-                <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+                <Ionicons name="chevron-forward" size={18} color="#9A9A98" />
               )}
             </Pressable>
           ))}

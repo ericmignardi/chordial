@@ -15,7 +15,7 @@ type ButtonProps = {
 
 const containerByVariant: Record<Variant, string> = {
   primary: "bg-emerald-600 active:opacity-80",
-  secondary: "bg-transparent border border-gray-200 active:opacity-70",
+  secondary: "bg-transparent border border-hair active:opacity-70",
   ghost: "bg-transparent active:opacity-70",
 };
 
@@ -34,7 +34,7 @@ const containerBySize: Record<Size, string> = {
 const textBySize: Record<Size, string> = {
   sm: "text-sm",
   md: "text-base",
-  lg: "text-xl",
+  lg: "text-base",
 };
 
 export default function Button({
@@ -62,7 +62,7 @@ export default function Button({
         <View className="flex-row items-center justify-center">
           {typeof children === "string" ? (
             <Text
-              className={`font-medium ${textBySize[size]} ${textByVariant[variant]}`}
+              className={`font-sans-medium ${textBySize[size]} ${textByVariant[variant]}`}
             >
               {children}
             </Text>
