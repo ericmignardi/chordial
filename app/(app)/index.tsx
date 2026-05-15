@@ -6,7 +6,6 @@ import { useFeed } from "@/hooks/useFeed";
 import { FlashList } from "@shopify/flash-list";
 import { format } from "date-fns";
 import { useRouter } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
@@ -35,7 +34,6 @@ export default function Home() {
             Home
           </Text>
         </View>
-        <Ionicons name="bookmark-outline" size={22} color="#5A5A58" />
       </View>
 
       {isLoading ? (

@@ -2,8 +2,8 @@ import PostActionsSheet from "@/components/post-actions-sheet";
 import Avatar from "@/components/ui/avatar";
 import type { FeedPost } from "@/hooks/useFeed";
 import { useLike, useUnlike } from "@/hooks/usePost";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRouter } from "expo-router";
 import React, { useRef } from "react";
 import { Image, Pressable, Text, View } from "react-native";
@@ -42,6 +42,7 @@ export default function PostCard({ post }: PostCardProps) {
 
   const openDetail = () =>
     router.push({ pathname: "/(app)/post/[id]", params: { id: post.id } });
+
   const openAuthor = () => {
     if (post.author?.username) {
       router.push({

@@ -64,6 +64,7 @@ export default function AppLayout() {
         name="new-post"
         options={{
           title: "New",
+          tabBarLabelStyle: { display: "none" },
           tabBarIcon: () => (
             <View
               className="rounded-full bg-emerald-600 items-center justify-center -mt-6"
