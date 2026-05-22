@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
+import { applyLikeToFeedCache } from "@/hooks/post-cache";
 import {
-  type FeedInfinite,
   type FeedPost,
   type FeedPostRaw,
   SELECT_COLUMNS,
@@ -84,39 +84,6 @@ export function useDeletePost() {
   });
 }
 
-function applyLikeToFeedCache(
-  qc: ReturnType<typeof useQueryClient>,
-  postId: string,
-  userId: string,
-  liking: boolean,
-) {
-  qc.setQueriesData<FeedInfinite>({ queryKey: ["feed"] }, (old) => {
-    if (!old) return old;
-    return {
-      ...old,
-      pages: old.pages.map((page) =>
-        page.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                liked_by_me: liking,
-                likes_count: post.likes_count + (liking ? 1 : -1),
-              }
-            : post,
-        ),
-      ),
-    };
-  });
-  qc.setQueryData<FeedPost | null>(["post", postId], (old) => {
-    if (!old) return old;
-    return {
-      ...old,
-      liked_by_me: liking,
-      likes_count: old.likes_count + (liking ? 1 : -1),
-    };
-  });
-}
-
 export function useLike(postId: string) {
   const { session } = useAuth();
   const userId = session?.user.id;
@@ -132,11 +99,11 @@ export function useLike(postId: string) {
     },
     onMutate: () => {
       if (!userId) return;
-      applyLikeToFeedCache(qc, postId, userId, true);
+      applyLikeToFeedCache(qc, postId, true);
     },
     onError: () => {
       if (!userId) return;
-      applyLikeToFeedCache(qc, postId, userId, false);
+      applyLikeToFeedCache(qc, postId, false);
     },
   });
 }
@@ -158,11 +125,11 @@ export function useUnlike(postId: string) {
     },
     onMutate: () => {
       if (!userId) return;
-      applyLikeToFeedCache(qc, postId, userId, false);
+      applyLikeToFeedCache(qc, postId, false);
     },
     onError: () => {
       if (!userId) return;
-      applyLikeToFeedCache(qc, postId, userId, true);
+      applyLikeToFeedCache(qc, postId, true);
     },
   });
 }

@@ -69,6 +69,14 @@ npm run android
 npm run lint
 ```
 
+**Run Tests:**
+
+```bash
+npm test
+```
+
+The test suite uses Vitest for focused unit/integration coverage of the Zod validators and React Query cache behavior. For the end-to-end product smoke pass, see [docs/manual-qa.md](docs/manual-qa.md).
+
 ---
 
 ## Things Learned
