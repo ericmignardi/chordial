@@ -6,7 +6,7 @@ import React from "react";
 export default function AuthLayout() {
   const { session, loading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
-  const segments = useSegments();
+  const segments = useSegments() as readonly string[];
 
   if (loading) return null;
 
